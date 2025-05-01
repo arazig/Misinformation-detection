@@ -1,0 +1,49 @@
+# Ignorer les fichiers cachés
+.*
+!.gitignore
+
+# Ignorer les fichiers générés par le système
+.DS_Store
+Thumbs.db
+
+# Ignorer les fichiers de logs
+*.log
+
+# Ignorer les fichiers de cache Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Ignorer les environnements virtuels
+env/
+venv/
+.venv/
+
+# Ignorer les fichiers Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignorer les fichiers de configuration de l'IDE
+.vscode/
+.idea/
+
+# Ignorer les fichiers de données temporaires
+*.csv~
+*.tmp
+*.bak
+
+# Ignorer les fichiers de sortie
+*.out
+*.class
+
+# Ignorer les fichiers de modèles TensorFlow/Keras
+*.h5
+*.ckpt
+checkpoint
+
+# Ignorer les fichiers de résultats
+*.pkl
+*.joblib
+
+# Ignorer les fichiers de sauvegarde
+*.swp
+*.swo
