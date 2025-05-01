@@ -232,7 +232,7 @@ def run_project_with_new_data(fake_path, true_path, new_data_path):
 
                 # Accuracy sur les nouvelles données
                 y_new_pred = model.predict(X_new)
-                new_data_accuracy = accuracy_score(new_data['label'], y_new_pred)
+                new_data_accuracy = accuracy_score(np.abs(new_data['label']-1), y_new_pred)
 
                 print(f"[INFO] {model_name} with {method.upper()} - Test Accuracy: {test_accuracy:.5f}, New Data Accuracy: {new_data_accuracy:.5f}")
 
@@ -263,7 +263,7 @@ def run_project_with_new_data(fake_path, true_path, new_data_path):
 if __name__ == "__main__":
     fake_path = 'data/Fake.csv'
     true_path = 'data/True.csv'
-    new_data_path = 'data/data/corpus_combined_dataset.csv'
+    new_data_path = 'data/corpus_combined_dataset.csv'
     results = run_project_with_new_data(fake_path, true_path, new_data_path)
     print("\nFinal Results:")
     print(results[['Vectorizer', 'Model', 'Test Accuracy', 'New Data Accuracy']])
