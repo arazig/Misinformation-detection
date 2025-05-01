@@ -16,6 +16,8 @@ from transformers import BertTokenizer, BertModel
 import torch
 import time
 
+from src.deep_lstm_model import prepare_word_embedding_features, train_and_evaluate_lstm, predict_on_new_data
+
 # Download NLTK resources
 nltk.download('stopwords')
 nltk.download('wordnet')
@@ -192,7 +194,7 @@ def run_project_with_new_data(fake_path, true_path, new_data_path):
     X_train_raw, X_test_raw, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     # Vectorisation et entraînement
-    vectorization_methods = ['bow', 'tfidf', 'word2vec']  # Ajoutez 'bert' si nécessaire
+    vectorization_methods = ['bow']#, 'tfidf', 'word2vec']  # Ajoutez 'bert' si nécessaire
     all_results = []
 
     for method in vectorization_methods:
@@ -254,10 +256,54 @@ def run_project_with_new_data(fake_path, true_path, new_data_path):
                 'Error': str(e)
             })
 
+
+    # Entraîner et évaluer le modèle LSTM
+    # --- Entraînement sur les données originales ---
+    print("\n[INFO] Running deep learning LSTM model on Word2Vec features...")
+    _, word2vec_model = vectorize_with_word2vec(pd.DataFrame({'cleaned_text': X_train_raw}))
+
+
+    tokenized_texts = [text.split() for text in data['cleaned_text']]
+    word_embedding_features = prepare_word_embedding_features(tokenized_texts, word2vec_model, max_len=100)
+    labels = data['label'].values
+
+    lstm_accuracy, lstm_model, lstm_device = train_and_evaluate_lstm(
+        word_embedding_features,
+        labels,
+        input_size=word_embedding_features.shape[2],
+        num_epochs=5
+    )
+
+    # --- Prédiction sur les nouvelles données ---
+    tokenized_new = [text.split() for text in new_data['cleaned_text']]
+    word_embedding_features_new = prepare_word_embedding_features(tokenized_new, word2vec_model, max_len=100)
+
+    new_preds = predict_on_new_data(lstm_model, lstm_device, word_embedding_features_new)
+
+    # Évaluer si tu as les vraies étiquettes :
+    if 'label' in new_data.columns:
+        new_labels = np.abs(new_data['label'].values -1)
+        accuracy_new_data = (new_preds == new_labels).mean()
+    else:
+        accuracy_new_data = None  # ou tu peux juste afficher les prédictions
+
+
     # Convertir les résultats en DataFrame
     final_results = pd.DataFrame(all_results)
+    
+        # --- Ajout au tableau final ---
+    final_results = pd.concat([final_results, pd.DataFrame([{
+        'Vectorizer': 'word2vec',
+        'Model': 'LSTM',
+        'Test Accuracy': lstm_accuracy / 100,
+        'New Data Accuracy': accuracy_new_data
+    }])], ignore_index=True)
+
     print("\n[INFO] Project pipeline completed successfully.")
     return final_results
+
+
+
 
 # Exemple d'utilisation
 if __name__ == "__main__":
