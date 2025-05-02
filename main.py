@@ -194,7 +194,7 @@ def run_project_with_new_data(fake_path, true_path, new_data_path):
     X_train_raw, X_test_raw, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     # Vectorisation et entraînement
-    vectorization_methods = ['bow']#, 'tfidf', 'word2vec']  # Ajoutez 'bert' si nécessaire
+    vectorization_methods = ['bow', 'tfidf']# 'word2vec'et 'bert' si nécessaire (cf notebook pour bert et W2V)
     all_results = []
 
     for method in vectorization_methods:
