@@ -4,6 +4,7 @@
     <img src="image/fake_news.jpeg" alt="Exemple d'image" style="width: 30%;"/>
 </div>
 
+> Report in `REPORT/NLP_project.pdf`
 
 ## Context
 The spread of misinformation, particularly through online platforms, has become a significant challenge in today's digital age. Fake news can influence public opinion, disrupt social harmony, and even impact political outcomes. Detecting misinformation is a critical task in the field of Natural Language Processing (NLP), where machine learning and deep learning techniques are employed to classify news articles as either "fake" or "true."
@@ -128,4 +129,8 @@ The following models were trained and evaluated:
 ---
 
 ## Acknowledgments
-We would like to thank the creators of the datasets and the open-source community for providing the tools and resources that made this project possible.
+We would like to thank 
+
+- Professor Christopher Kermorvant
+
+- The creators of the datasets and the open-source community for providing the tools and resources that made this project possible.
